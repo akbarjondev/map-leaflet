@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const speedSlice = createSlice({
   name: "control_speed",
   initialState: {
-    speed: 3000,
+    speed: 10,
   },
   reducers: {
     control: (state, action) => {
-      state.speed = action.payload;
+      state.speed = action.payload.control;
     },
   },
 });

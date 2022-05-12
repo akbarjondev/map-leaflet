@@ -26,15 +26,15 @@ const Map = () => {
 
   const cordinationSetter = useCallback(() => {
     if (destination.lat > initialLocation.lat) {
-      setLat((lat) => lat + 0.01);
+      setLat((lat) => lat + 0.001);
     } else {
-      setLat((lat) => lat - 0.01);
+      setLat((lat) => lat - 0.001);
     }
 
     if (destination.lng > initialLocation.lng) {
-      setLon((lon) => lon + 0.01);
+      setLon((lon) => lon + 0.001);
     } else {
-      setLon((lon) => lon - 0.01);
+      setLon((lon) => lon - 0.001);
     }
   }, [initialLocation, destination]);
 
@@ -52,7 +52,7 @@ const Map = () => {
       } else {
         clearInterval(intervalId);
       }
-    }, speed + 1000);
+    }, 5000);
 
     return () => {
       clearInterval(intervalId);
@@ -65,16 +65,19 @@ const Map = () => {
     setHeading(course);
   }, [initialLocation, destination]);
 
-  // maker drifter
+  // marker drifter
   useEffect(() => {
-    const interval = setInterval(() => {
-      cordinationSetter();
-    }, 100);
+    let avarage = 100 / speed;
+    if (speed > 0) {
+      const interval = setInterval(() => {
+        cordinationSetter();
+      }, avarage);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [cordinationSetter, destination, initialLocation]);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [cordinationSetter, destination, initialLocation, speed]);
 
   return (
     <MapContainer className="map" center={[lat, lon]} zoom={8}>
